@@ -156,3 +156,89 @@
 - Severity: Medium
 - Recommendation: Change the redirect target in `StudentSessionCheck` to `student.showLogin`. Codify expected route-method contracts in feature tests.
 - Expected benefit: Robust session-expiry handling and correct error-path navigation.
+
+---
+
+## Runtime-Confirmed Issues (discovered by running the application)
+
+The following findings were identified through live execution of the application by a colleague. They carry higher confidence than static review findings because they are directly observable failures.
+
+### F-2. Card layout has overlapping elements
+- Major category: Implementation/Frontend
+- Secondary lens: Maintainability/Evolvability
+- Source: Runtime testing
+- Location: Card components across the UI (specific page not yet isolated)
+- Problem: Card component elements overlap each other visually. This is typically caused by absolute or fixed positioning without proper z-index or container constraints, missing overflow handling, or hardcoded pixel dimensions that break under varying content length.
+- Why it matters: Overlapping elements make content unreadable and signal fragile layout logic that will regress on any content or viewport change.
+- Evidence: Observed directly during live testing.
+- Severity: Medium
+- Recommendation: Audit card components for absolute positioning and hardcoded dimensions. Switch to flex or grid layout with proper gap and min-height constraints. Test across different content lengths.
+- Expected benefit: Stable, readable card layout that does not regress on content changes.
+
+### F-3. Navigation arrows are present on landing and login pages but absent from the dashboard
+- Major category: Implementation/Frontend
+- Secondary lens: Contract/Postcondition; Maintainability/Evolvability
+- Source: Runtime testing
+- Location: Landing page, login page (arrows present); dashboard page (arrows absent)
+- Problem: A navigation arrow pattern used consistently on the landing and login pages was not carried through to the dashboard. The UI convention is established and then broken, producing an inconsistent navigation experience. This is likely a component that was not reused where it should have been.
+- Why it matters: Inconsistent navigation patterns increase user confusion and indicate that UI components are not being reused — each page is implementing its own navigation independently.
+- Evidence: Observed directly during live testing.
+- Severity: Low
+- Recommendation: Identify the navigation arrow component used on the landing/login pages and apply it consistently to the dashboard. If no shared component exists, extract one.
+- Expected benefit: Consistent navigation behavior across pages and a single component to maintain.
+
+### F-4. A button in the role management area is non-functional
+- Major category: Implementation/Frontend
+- Secondary lens: Contract/Postcondition
+- Source: Runtime testing
+- Location: Role management UI (specific route not yet isolated)
+- Problem: A button in the roles area does not respond to user interaction. The button renders but produces no action — no navigation, no modal, no API call. This indicates a missing or disconnected event handler, an unimplemented route, or a broken controller action behind the button.
+- Why it matters: A visible but non-functional button creates a false affordance. Users cannot complete the intended action and have no feedback about why.
+- Evidence: Observed directly during live testing.
+- Severity: Medium
+- Recommendation: Identify the button's intended action (from the SRS or UI context). Verify whether the backend route and controller action exist. Wire up the correct `onClick` handler or form submission.
+- Expected benefit: Role management actions complete as intended without silent failures.
+
+### F-5. Document preview is non-functional
+- Major category: Implementation/Frontend
+- Secondary lens: Contract/Postcondition; Exception Contract
+- Source: Runtime testing
+- Location: Document preview feature (specific page not yet isolated)
+- Problem: The document preview functionality fails at runtime. The preview area either renders blank, throws an error, or does not respond. Likely causes include: a broken or missing controller action serving the file, an incorrect file path or storage reference, a missing or misconfigured iframe/viewer component, or a route that is defined but not implemented.
+- Why it matters: Document preview is a user-facing feature that surfaces stored files. If it fails silently, users have no way to verify submitted documents, which is a functional gap in any document-management workflow.
+- Evidence: Observed directly during live testing.
+- Severity: Medium
+- Recommendation: Trace the preview request from the UI component through to the controller and file storage layer. Verify that the file path, storage driver, and response type are correctly configured. Add error handling that surfaces a meaningful message when preview fails.
+- Expected benefit: Users can preview documents as intended; failures are communicated rather than silently ignored.
+
+### F-6. Calendar daily/weekly/monthly view toggle buttons are non-functional
+- Major category: Implementation/Frontend
+- Secondary lens: Contract/Postcondition
+- Source: Runtime testing
+- Location: Calendar component — tab/button group for view selection
+- Problem: Three buttons for switching between daily, weekly, and monthly calendar views are visible in the UI but do not respond. Clicking them produces no change in the calendar view. The state management or event handler for view switching is either missing or disconnected from the calendar rendering logic.
+- Why it matters: The calendar is non-functional beyond its default view. Users cannot access the daily or monthly perspectives, meaning two of three documented view modes are dead UI.
+- Evidence: Observed directly during live testing.
+- Severity: Medium
+- Recommendation: Identify the view-state variable controlling the calendar display. Connect each button's `onClick` to update that state. Verify that the calendar component re-renders the correct view on state change.
+- Expected benefit: All three calendar views become accessible and functional as designed.
+
+---
+
+### B-10. Student login frontend exists without backend role support or seeder data
+- Major category: Implementation/Backend
+- Secondary lens: Contract/Precondition; Defensive Programming
+- Source: Runtime testing — compounds static finding B-5
+- Location: `TVPSS-MAIN/app/Http/Middleware/StudentSessionCheck.php`; `TVPSS-MAIN/database/seeders/`; `TVPSS-MAIN/routes/studentRoutes.php`; student login page component
+- Problem: A student login page is fully rendered by the frontend, but two foundational backend requirements are missing:
+  1. The authentication middleware has no student role defined — the student is not recognized as a principal in the access control model.
+  2. The database seeders contain no mock student data — in any fresh deployment or test environment, the student login cannot succeed because no student records exist to authenticate against.
+  This means the frontend presents a complete login flow that cannot succeed in a standard deployment. The contract between the student-facing UI and the backend is broken at the data and middleware layers simultaneously.
+- Why it matters: This compounds finding B-5 (IC-only authentication). Even if IC-only login were considered acceptable, it cannot function without student records in the database. Any tester, reviewer, or new developer running the application fresh cannot exercise the student path at all. The gap between the delivered UI and its backend support is complete.
+- Evidence:
+  - Student login page renders and is accessible.
+  - No student role entry found in middleware role definitions.
+  - Database seeders do not include student user records (confirmed via MongoDB client observation during runtime testing).
+- Severity: High
+- Recommendation: (1) Define a student principal in the authentication middleware or access model, distinct from admin roles. (2) Add student mock records to the database seeders so the login path can be exercised in development and testing. (3) Address root authentication weakness per B-5 recommendation.
+- Expected benefit: The student authentication path is testable in any environment and the frontend/backend contract is complete.

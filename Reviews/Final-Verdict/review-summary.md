@@ -66,6 +66,17 @@ This project is in a low construction maturity state with several issues that cr
 | SRS/SDD module inventory inconsistency | Codex | Confirmed | Medium |
 | PWA claims unsupported in repo | Codex | Confirmed | Medium |
 
+### Runtime-Confirmed Findings (live application testing)
+
+| Finding | Source | Final Status | Priority |
+|---|---|---|---|
+| Student login frontend has no backend role or seeder support | Runtime testing | Confirmed | High |
+| Document preview non-functional | Runtime testing | Confirmed | Medium |
+| Role management button non-functional | Runtime testing | Confirmed | Medium |
+| Calendar view toggle buttons (daily/weekly/monthly) non-functional | Runtime testing | Confirmed | Medium |
+| Card layout has overlapping elements | Runtime testing | Confirmed | Medium |
+| Navigation arrows absent from dashboard (present on landing/login) | Runtime testing | Confirmed | Low |
+
 ## Findings Not Carried Forward
 - "No vendor/node_modules" — workspace constraint, not a project defect.
 - Naming convention inconsistencies — valid but surface-level; not a construction risk.

@@ -118,6 +118,56 @@ Final adjudication across Codex findings, Copilot findings, and Copilot cross-ch
 - Evidence: Confirmed by Copilot and cross-check.
 - Severity: Medium
 
+### Runtime-Confirmed Issues (live application testing)
+
+- Title: Student login frontend has no backend role support or seeder data
+- Major Category: Implementation/Backend
+- Secondary Lens: Contract/Precondition; Defensive Programming
+- Location: `app/Http/Middleware/StudentSessionCheck.php`; `database/seeders/`; student login page component
+- Problem: The student login page renders fully but the authentication middleware has no student role defined, and database seeders contain no mock student records. The frontend/backend contract for the student path is broken at both the access model and data layers. In any fresh deployment the student login cannot succeed.
+- Evidence: Confirmed by runtime testing. Compounds static finding B-5.
+- Severity: High
+
+- Title: Document preview non-functional
+- Major Category: Implementation/Frontend
+- Secondary Lens: Contract/Postcondition; Exception Contract
+- Location: Document preview feature (page not yet isolated)
+- Problem: The document preview area fails silently at runtime — blank, error, or unresponsive. Root cause is likely a broken or missing controller action, incorrect file path/storage reference, or misconfigured viewer component.
+- Evidence: Confirmed by runtime testing.
+- Severity: Medium
+
+- Title: Role management button non-functional
+- Major Category: Implementation/Frontend
+- Secondary Lens: Contract/Postcondition
+- Location: Role management UI
+- Problem: A button in the role management area renders but produces no action. Missing or disconnected event handler, unimplemented route, or broken controller action.
+- Evidence: Confirmed by runtime testing.
+- Severity: Medium
+
+- Title: Calendar view toggle buttons non-functional (daily/weekly/monthly)
+- Major Category: Implementation/Frontend
+- Secondary Lens: Contract/Postcondition
+- Location: Calendar component — view selection tab group
+- Problem: Three view-selection buttons are visible but do not change the calendar view. State management or event handler for view switching is missing or disconnected from the rendering logic.
+- Evidence: Confirmed by runtime testing.
+- Severity: Medium
+
+- Title: Card layout has overlapping elements
+- Major Category: Implementation/Frontend
+- Secondary Lens: Maintainability/Evolvability
+- Location: Card components across the UI
+- Problem: Card component elements overlap each other visually. Caused by absolute/fixed positioning without proper container constraints, missing overflow handling, or hardcoded dimensions that break on varying content.
+- Evidence: Confirmed by runtime testing.
+- Severity: Medium
+
+- Title: Navigation arrows absent from dashboard, present on landing and login pages
+- Major Category: Implementation/Frontend
+- Secondary Lens: Maintainability/Evolvability
+- Location: Dashboard page (absent); landing page, login page (present)
+- Problem: A navigation arrow pattern established on landing/login pages was not carried through to the dashboard. Indicates UI components are not being reused — each page implements navigation independently.
+- Evidence: Confirmed by runtime testing.
+- Severity: Low
+
 ---
 
 ## 3. Documentation Issues
