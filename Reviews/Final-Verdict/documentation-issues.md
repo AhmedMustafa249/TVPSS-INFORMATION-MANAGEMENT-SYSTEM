@@ -1,24 +1,5 @@
 # TVPSS-MAIN Final Verdict — Documentation Issues
 
-## Diagram / Flow Discrepancies
-
-### D-1. SDD sequence-diagram section is not reviewable
-- Major category: Documentation/Diagram Discrepancy
-- Secondary lens: Maintainability/Evolvability
-- Source: Codex (confirmed by cross-check)
-- Location: `Software Documents/SDD.md:1969-2049`
-- Problem: The sequence-diagram section of the SDD consists of repeated figure caption placeholders — `Figure 4.4`, `Figure 4.5`, etc. — with no actual diagram content preserved in Markdown. No diagram image assets exist under `Software Documents/`. The section claims to document interaction flows between components, but nothing is reviewable.
-- Evidence:
-  - `SDD.md` sequence-diagram section contains repeated `Figure 4.x` labels with no accompanying content.
-  - No `.png`, `.svg`, or equivalent assets exist under `Software Documents/`.
-  - This is consistent with a PDF-to-Markdown conversion that stripped embedded images.
-- Why it matters: The repo cannot support the claim that interaction flows are specified and reviewable. Any presenter or maintainer citing the SDD as a design reference for component interactions is citing an empty section.
-- Severity: Medium
-- Recommendation: Re-export the real sequence diagrams as image files into `Software Documents/` with Markdown references, or replace placeholders with textual sequence descriptions (actor, message, response, loop/alt conditions).
-- Expected benefit: Interaction design becomes reviewable and maintainable from the repository.
-
----
-
 ## Missing Use Cases
 
 ### D-2. Donation and equipment-report modules have no use cases in the SRS

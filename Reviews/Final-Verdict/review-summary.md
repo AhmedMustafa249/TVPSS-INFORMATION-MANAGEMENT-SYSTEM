@@ -63,10 +63,10 @@ This project is in a low construction maturity state with several issues that cr
 | Duplicate follow-up logic across controllers | Copilot | Confirmed | Medium |
 | Student session middleware → POST route redirect | Copilot | Confirmed | Medium |
 | FormRequest validation duplicated in controllers | Copilot | Confirmed | Medium |
-| SDD sequence diagrams are placeholder-only | Codex | Confirmed | Medium |
 | SRS/SDD module inventory inconsistency | Codex | Confirmed | Medium |
 | PWA claims unsupported in repo | Codex | Confirmed | Medium |
 
 ## Findings Not Carried Forward
 - "No vendor/node_modules" — workspace constraint, not a project defect.
-- Naming convention inconsistencies — valid but surface-level; merged into quick-wins.
+- Naming convention inconsistencies — valid but surface-level; not a construction risk.
+- SDD sequence-diagram section not reviewable — this is a PDF-to-Markdown conversion artifact (images were excluded during conversion), not a real documentation failure by the team.

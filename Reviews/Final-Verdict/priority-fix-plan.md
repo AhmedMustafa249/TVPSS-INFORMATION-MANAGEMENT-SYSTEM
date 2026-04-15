@@ -72,21 +72,8 @@ This plan is derived from the final adjudication of Codex findings, Copilot find
 ### 16. Update SDD architecture description to reflect actual code structure
 - Action: After Phase 3 refactoring, update the SDD subsystem/controller mapping, role enforcement description, and logical viewpoint to match the refactored code. If refactoring is deferred, annotate the SDD to explicitly distinguish intended design from current implementation state.
 
-### 17. Restore or replace the SDD sequence-diagram section
-- Action: Re-export sequence diagrams as image files into `Software Documents/` with Markdown references, or replace the `Figure 4.x` placeholders with textual sequence descriptions.
-
-### 18. Remove or implement PWA claims
+### 17. Remove or implement PWA claims
 - Action: Either add a web app manifest, service worker, and HTTPS meta, or remove PWA references from SRS and SDD.
-
----
-
-## Quick Wins (can be done independently at any time)
-
-- Fix `equipmentUpdate()` redirect to include the required `{equipment}` parameter.
-- Fix student session middleware redirect to `student.showLogin`.
-- Remove inline `$request->validate()` from `UserController` methods.
-- Namespace conflicting route names (`ppd.schoolInfo.*`, `state.schoolInfo.*`).
-- Replace the stock Laravel README in `TVPSS-MAIN/README.md` with project-specific setup, module, and architecture notes.
 
 ---
 

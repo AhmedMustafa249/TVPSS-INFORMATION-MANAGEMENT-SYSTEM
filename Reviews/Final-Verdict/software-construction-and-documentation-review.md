@@ -122,12 +122,6 @@ Final adjudication across Codex findings, Copilot findings, and Copilot cross-ch
 
 ## 3. Documentation Issues
 
-### Diagram / Flow Discrepancies
-- Title: SDD sequence-diagram section is not reviewable
-- Location: `Software Documents/SDD.md:1969-2049`
-- Problem: Section contains only repeated figure caption placeholders. No diagram assets exist in the repository.
-- Severity: Medium
-
 ### Missing Use Cases
 - Title: Donation and equipment-report modules have no SRS use cases
 - Location: `SRS.md:170-178`; `routes/donationRoutes.php`; `routes/ppdAdminRoutes.php`
@@ -187,18 +181,7 @@ Final adjudication across Codex findings, Copilot findings, and Copilot cross-ch
 
 ---
 
-## 7. Quick Wins
-- Fix `equipmentUpdate()` redirect to include the required `{equipment}` parameter.
-- Fix `StudentSessionCheck` redirect to `student.showLogin` (GET) instead of `student.login` (POST).
-- Unify crew-application status constants across backend and frontend.
-- Remove inline `$request->validate()` calls from `UserController` methods that already use FormRequest classes.
-- Namespace conflicting route names with subsystem prefixes (`ppd.schoolInfo.*`, `state.schoolInfo.*`).
-- Move payment credentials and endpoint URLs to `.env` / `config/services.php`.
-- Replace the stock Laravel README with project-specific setup, module, and architecture notes.
-
----
-
-## 8. Long-Term Improvements
+## 7. Long-Term Improvements
 - Fix `CheckRole` redirect targets, then reinstate and enforce role middleware per route group with full ownership scoping.
 - Commit to one persistence strategy (MongoDB document model or relational SQL) and remove all artifacts from the other.
 - Decompose `SchoolAdminController` into bounded-context controllers with domain rules extracted into services.
@@ -208,7 +191,7 @@ Final adjudication across Codex findings, Copilot findings, and Copilot cross-ch
 
 ---
 
-## 9. Strengths Found
+## 8. Strengths Found
 - Enum-backed state modeling exists in `TVPSSVersion` — a sound foundation for stricter status contracts that can be extended to other domain states.
 - FormRequest classes are already in place and can become the contract backbone with limited refactoring effort.
 - Role-specific route files reflect the correct architectural intent — the separation at the file level is right; the failure is at the enforcement level.
@@ -217,7 +200,7 @@ Final adjudication across Codex findings, Copilot findings, and Copilot cross-ch
 
 ---
 
-## 10. Final Verdict
+## 9. Final Verdict
 
 - Software construction maturity: Low
 - Documentation alignment maturity: Low
